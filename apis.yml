@@ -9,9 +9,9 @@ image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 url: >-
   https://raw.githubusercontent.com/api-evangelist/messaging-api/refs/heads/main/apis.yml
 tags:
+  - API Pattern
   - Messaging
   - Template
-  - API Pattern
 created: '2024-12-29'
 modified: '2026-03-16'
 specificationVersion: '0.19'
