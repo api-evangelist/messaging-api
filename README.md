@@ -5,9 +5,9 @@ A template and concept entry for messaging APIs. This represents the pattern and
 
 ## Scope
 
-- **Type:** Index 
-- **Position:** Consuming 
-- **Access:** 3rd-Party 
+- **Type:** Index
+- **Position:** Consuming
+- **Access:** 3rd-Party
 
 ## Tags:
 
@@ -15,8 +15,25 @@ A template and concept entry for messaging APIs. This represents the pattern and
 
 ## Timestamps
 
-- **Created:** 2024-12-29 
-- **Modified:** 2026-03-16 
+- **Created:** 2024-12-29
+- **Modified:** 2026-04-28
+
+## APIs
+
+### Messaging API Messages API
+Template Messages API used as a reusable pattern for messaging API design, storytelling, training, and knowledge bases. Models the core operations expected of a generic messages-style endpoint.
+
+**Human URL:** [https://example.com/messages](https://example.com/messages)
+
+**Base URL:** https://api.example.com
+
+#### Tags:
+
+ - Messaging, Messages, Template
+
+#### Properties
+
+- [OpenAPI](openapi/messaging-api-openapi.yml)
 
 ## Maintainers
 
