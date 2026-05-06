@@ -1,0 +1,215 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Messaging API Messages API
+  description: This is a template APIs.json for a messages API, to be used in storytelling, training, and knowledge bases.
+  tags:
+  - Messaging
+  - Api
+  - API
+  created: '2026-05-06'
+  modified: '2026-05-06'
+capability:
+  consumes:
+  - type: http
+    namespace: messaging-api
+    baseUri: https://api.example.com
+    description: Messaging API Messages API HTTP API.
+    authentication:
+      type: apikey
+      in: header
+      name: api-key
+      value: '{{MESSAGING_API_TOKEN}}'
+    resources:
+    - name: messages
+      path: /messages
+      operations:
+      - name: getmessages
+        method: GET
+        description: Messaging API Retrieves Messages
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createmessage
+        method: POST
+        description: Messaging API Create Message
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: messages-messageid
+      path: /messages/{messageId}
+      operations:
+      - name: getmessage
+        method: GET
+        description: Messaging API Retrieve Message
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updatemessage
+        method: PUT
+        description: Messaging API Update Message
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletemessage
+        method: DELETE
+        description: Messaging API Delete Message
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: messages-messageid-send
+      path: /messages/{messageId}/send
+      operations:
+      - name: sendmessage
+        method: PUT
+        description: Messaging API Send Message
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    port: 8080
+    namespace: messaging-api-rest
+    description: REST adapter for Messaging API Messages API.
+    resources:
+    - path: /messages
+      name: getmessages
+      operations:
+      - method: GET
+        name: getmessages
+        description: Messaging API Retrieves Messages
+        call: messaging-api.getmessages
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /messages
+      name: createmessage
+      operations:
+      - method: POST
+        name: createmessage
+        description: Messaging API Create Message
+        call: messaging-api.createmessage
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /messages/{messageId}
+      name: getmessage
+      operations:
+      - method: GET
+        name: getmessage
+        description: Messaging API Retrieve Message
+        call: messaging-api.getmessage
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /messages/{messageId}
+      name: updatemessage
+      operations:
+      - method: PUT
+        name: updatemessage
+        description: Messaging API Update Message
+        call: messaging-api.updatemessage
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /messages/{messageId}
+      name: deletemessage
+      operations:
+      - method: DELETE
+        name: deletemessage
+        description: Messaging API Delete Message
+        call: messaging-api.deletemessage
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /messages/{messageId}/send
+      name: sendmessage
+      operations:
+      - method: PUT
+        name: sendmessage
+        description: Messaging API Send Message
+        call: messaging-api.sendmessage
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    port: 9090
+    namespace: messaging-api-mcp
+    transport: http
+    description: MCP adapter for Messaging API Messages API for AI agent use.
+    tools:
+    - name: getmessages
+      description: Messaging API Retrieves Messages
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: messaging-api.getmessages
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createmessage
+      description: Messaging API Create Message
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: messaging-api.createmessage
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getmessage
+      description: Messaging API Retrieve Message
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: messaging-api.getmessage
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updatemessage
+      description: Messaging API Update Message
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: messaging-api.updatemessage
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deletemessage
+      description: Messaging API Delete Message
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: messaging-api.deletemessage
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: sendmessage
+      description: Messaging API Send Message
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: messaging-api.sendmessage
+      outputParameters:
+      - type: object
+        mapping: $.
+binds:
+- namespace: env
+  keys:
+    MESSAGING_API_TOKEN: MESSAGING_API_TOKEN
