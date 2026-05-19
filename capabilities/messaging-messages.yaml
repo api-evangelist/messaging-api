@@ -1,24 +1,23 @@
 naftiko: 1.0.0-alpha2
 info:
-  label: Messaging API Messages API
-  description: This is a template APIs.json for a messages API, to be used in storytelling, training, and knowledge bases.
+  label: Messaging API Messages API — Messages
+  description: 'Messaging API Messages API — Messages. 6 operations. Lead operation: Messaging API Retrieves Messages. Self-contained
+    Naftiko capability covering one Messaging Api business surface.'
   tags:
-  - Messaging
-  - Api
-  - API
-  created: '2026-05-06'
-  modified: '2026-05-06'
+  - Messaging Api
+  - Messages
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MESSAGING_API_API_KEY: MESSAGING_API_API_KEY
 capability:
   consumes:
   - type: http
-    namespace: messaging-api
+    namespace: messaging-messages
     baseUri: https://api.example.com
-    description: Messaging API Messages API HTTP API.
-    authentication:
-      type: apikey
-      in: header
-      name: api-key
-      value: '{{MESSAGING_API_TOKEN}}'
+    description: Messaging API Messages API — Messages business capability. Self-contained, no shared references.
     resources:
     - name: messages
       path: /messages
@@ -39,7 +38,13 @@ capability:
         - name: result
           type: object
           value: $.
-    - name: messages-messageid
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: messages-messageId
       path: /messages/{messageId}
       operations:
       - name: getmessage
@@ -58,6 +63,12 @@ capability:
         - name: result
           type: object
           value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
       - name: deletemessage
         method: DELETE
         description: Messaging API Delete Message
@@ -66,7 +77,7 @@ capability:
         - name: result
           type: object
           value: $.
-    - name: messages-messageid-send
+    - name: messages-messageId-send
       path: /messages/{messageId}/send
       operations:
       - name: sendmessage
@@ -77,139 +88,154 @@ capability:
         - name: result
           type: object
           value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: apikey
+      key: api-key
+      value: '{{env.MESSAGING_API_API_KEY}}'
+      placement: header
   exposes:
   - type: rest
+    namespace: messaging-messages-rest
     port: 8080
-    namespace: messaging-api-rest
-    description: REST adapter for Messaging API Messages API.
+    description: REST adapter for Messaging API Messages API — Messages. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
     resources:
-    - path: /messages
-      name: getmessages
+    - path: /v1/messages
+      name: messages
+      description: REST surface for messages.
       operations:
       - method: GET
         name: getmessages
         description: Messaging API Retrieves Messages
-        call: messaging-api.getmessages
+        call: messaging-messages.getmessages
         outputParameters:
         - type: object
           mapping: $.
-    - path: /messages
-      name: createmessage
-      operations:
       - method: POST
         name: createmessage
         description: Messaging API Create Message
-        call: messaging-api.createmessage
+        call: messaging-messages.createmessage
+        with:
+          body: rest.body
         outputParameters:
         - type: object
           mapping: $.
-    - path: /messages/{messageId}
-      name: getmessage
+    - path: /v1/messages/{messageid}
+      name: messages-messageid
+      description: REST surface for messages-messageId.
       operations:
       - method: GET
         name: getmessage
         description: Messaging API Retrieve Message
-        call: messaging-api.getmessage
+        call: messaging-messages.getmessage
         outputParameters:
         - type: object
           mapping: $.
-    - path: /messages/{messageId}
-      name: updatemessage
-      operations:
       - method: PUT
         name: updatemessage
         description: Messaging API Update Message
-        call: messaging-api.updatemessage
+        call: messaging-messages.updatemessage
+        with:
+          body: rest.body
         outputParameters:
         - type: object
           mapping: $.
-    - path: /messages/{messageId}
-      name: deletemessage
-      operations:
       - method: DELETE
         name: deletemessage
         description: Messaging API Delete Message
-        call: messaging-api.deletemessage
+        call: messaging-messages.deletemessage
         outputParameters:
         - type: object
           mapping: $.
-    - path: /messages/{messageId}/send
-      name: sendmessage
+    - path: /v1/messages/{messageid}/send
+      name: messages-messageid-send
+      description: REST surface for messages-messageId-send.
       operations:
       - method: PUT
         name: sendmessage
         description: Messaging API Send Message
-        call: messaging-api.sendmessage
+        call: messaging-messages.sendmessage
+        with:
+          body: rest.body
         outputParameters:
         - type: object
           mapping: $.
   - type: mcp
+    namespace: messaging-messages-mcp
     port: 9090
-    namespace: messaging-api-mcp
     transport: http
-    description: MCP adapter for Messaging API Messages API for AI agent use.
+    description: MCP adapter for Messaging API Messages API — Messages. One tool per consumed operation, routed inline through
+      this capability's consumes block.
     tools:
-    - name: getmessages
+    - name: messaging-api-retrieves-messages
       description: Messaging API Retrieves Messages
       hints:
         readOnly: true
         destructive: false
         idempotent: true
-      call: messaging-api.getmessages
+      call: messaging-messages.getmessages
       outputParameters:
       - type: object
         mapping: $.
-    - name: createmessage
+    - name: messaging-api-create-message
       description: Messaging API Create Message
       hints:
         readOnly: false
         destructive: false
         idempotent: false
-      call: messaging-api.createmessage
+      call: messaging-messages.createmessage
+      with:
+        body: tools.body
       outputParameters:
       - type: object
         mapping: $.
-    - name: getmessage
+    - name: messaging-api-retrieve-message
       description: Messaging API Retrieve Message
       hints:
         readOnly: true
         destructive: false
         idempotent: true
-      call: messaging-api.getmessage
+      call: messaging-messages.getmessage
       outputParameters:
       - type: object
         mapping: $.
-    - name: updatemessage
+    - name: messaging-api-update-message
       description: Messaging API Update Message
       hints:
         readOnly: false
         destructive: false
         idempotent: true
-      call: messaging-api.updatemessage
+      call: messaging-messages.updatemessage
+      with:
+        body: tools.body
       outputParameters:
       - type: object
         mapping: $.
-    - name: deletemessage
+    - name: messaging-api-delete-message
       description: Messaging API Delete Message
       hints:
         readOnly: false
         destructive: true
         idempotent: true
-      call: messaging-api.deletemessage
+      call: messaging-messages.deletemessage
       outputParameters:
       - type: object
         mapping: $.
-    - name: sendmessage
+    - name: messaging-api-send-message
       description: Messaging API Send Message
       hints:
         readOnly: false
         destructive: false
         idempotent: true
-      call: messaging-api.sendmessage
+      call: messaging-messages.sendmessage
+      with:
+        body: tools.body
       outputParameters:
       - type: object
         mapping: $.
-binds:
-- namespace: env
-  keys:
-    MESSAGING_API_TOKEN: MESSAGING_API_TOKEN
