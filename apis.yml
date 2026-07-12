@@ -33,3 +33,6 @@ common: []
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
+common:
+- type: Authentication
+  url: authentication/messaging-api-authentication.yml
