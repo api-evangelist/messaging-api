@@ -34,5 +34,7 @@ maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
 common:
+- type: AgenticAccess
+  url: agentic-access/messaging-api-agentic-access.yml
 - type: Authentication
   url: authentication/messaging-api-authentication.yml
