@@ -1,49 +1,37 @@
 openapi: 3.1.0
 info:
-
   title: Messaging API Messages API
-  description: |
-    This is a template APIs.json for a messages API, to be used in storytelling, training, and knowledge bases.
+  description: 'This is a template APIs.json for a messages API, to be used in storytelling, training, and knowledge bases.
 
+    '
   version: 0.1.0
-
   contact:
     name: API Evangelist
     url: https://apievangelist.com
     email: info@apievangelist.com
-
   termsOfService: http://example.com/terms/
-
   license:
     name: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
     identifier: CC-BY-NC-SA-4.0
     url: https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en
-
-externalDocs:
-  description: Messages API Landing Page
-  url: http://example.com/messages
-
 servers:
-  - url: https://api.example.com
-    description: Production
-
+- url: https://api.example.com
+  description: Production
 tags:
+- name: Messages
+  description: 'Managing, sending, and receiving of messages via SMS and other channels.
 
-  - name: Messages
-    description: |
-      Managing, sending, and receiving of messages via SMS and other channels.
-
+    '
 paths:
-
   /messages:
     get:
       operationId: getMessages
       summary: Messaging API Retrieves Messages
       description: Returns a list of all messages for the authenticated user.
       security:
-        - apiKeys: []
+      - apiKeys: []
       tags:
-        - Messages
+      - Messages
       responses:
         '200':
           description: A list of messages
@@ -78,9 +66,9 @@ paths:
       summary: Messaging API Create Message
       description: Creating a new message for sending to a recipient.
       tags:
-        - Messages
+      - Messages
       security:
-        - apiKeys: []
+      - apiKeys: []
       requestBody:
         required: true
         content:
@@ -128,15 +116,15 @@ paths:
           $ref: '#/components/responses/InternalServerError'
   /messages/{messageId}:
     parameters:
-      - $ref: '#/components/parameters/MessageId'
+    - $ref: '#/components/parameters/MessageId'
     get:
       summary: Messaging API Retrieve Message
       description: Returns the details of a specific message.
       operationId: getMessage
       tags:
-        - Messages
+      - Messages
       security:
-        - apiKeys: []
+      - apiKeys: []
       responses:
         '200':
           description: Message Details
@@ -168,7 +156,6 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-
     put:
       summary: Messaging API Update Message
       description: Updates a single message.
@@ -189,9 +176,9 @@ paths:
               Message:
                 $ref: '#/components/examples/Message'
       security:
-        - apiKeys: []
+      - apiKeys: []
       tags:
-        - Messages
+      - Messages
       responses:
         '204':
           description: Message Updated
@@ -207,15 +194,14 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-
     delete:
       summary: Messaging API Delete Message
       description: Deletes a message.
       operationId: deleteMessage
       security:
-        - apiKeys: []
+      - apiKeys: []
       tags:
-        - Messages
+      - Messages
       responses:
         '204':
           description: Message Deleted
@@ -231,12 +217,9 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-
   /messages/{messageId}/send:
-
     parameters:
-      - $ref: '#/components/parameters/MessageId'
-
+    - $ref: '#/components/parameters/MessageId'
     put:
       summary: Messaging API Send Message
       description: Sends a single message.
@@ -257,9 +240,9 @@ paths:
               Message:
                 $ref: '#/components/examples/Message'
       security:
-        - apiKeys: []
+      - apiKeys: []
       tags:
-        - Messages
+      - Messages
       responses:
         '204':
           description: Message Sent
@@ -275,61 +258,8 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
         '500':
           $ref: '#/components/responses/InternalServerError'
-
 components:
-
-  examples:
-
-    MessageCollection:
-      value:
-        meta:
-          page: 1
-          pageSize: 10
-          totalPages: 2
-        data:
-          - id: efdbb9d1-02c2-4bc3-afb7-6788d8782b1e
-            sender: Jane Doe
-            recipient: John Doe
-            subjectOf: Meeting Later
-            text: Please meet me at the market.
-            dateSent: '2018-04-25T18:00:30+01:00'
-            dateReceived: '2018-04-25T18:00:30+01:00'
-        links:
-          self: https://api.example.com/messages
-          next: https://api.example.com/messages?page=2
-
-    SingleMessage:
-      value:
-        meta:
-          page: 1
-          pageSize: 10
-          totalPages: 2
-        data:
-          id: efdbb9d1-02c2-4bc3-afb7-6788d8782b1e
-          sender: Jane Doe
-          recipient: John Doe
-          subjectOf: Meeting Later
-          text: Please meet me at the market.
-          dateSent: '2018-04-25T18:00:30+01:00'
-          dateReceived: '2018-04-25T18:00:30+01:00'
-        links:
-          self: https://api.example.com/messages
-
-    Message:
-      value:
-        sender: Jane Doe
-        recipient: John Doe
-        subjectOf: Meeting Later
-        text: Please meet me at the market.
-
-  securitySchemes:
-    apiKeys:
-      type: apiKey
-      name: api-key
-      in: header
-
   parameters:
-
     MessageId:
       name: messageId
       in: path
@@ -342,67 +272,170 @@ components:
         maxLength: 36
         pattern: ^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
       example: 1725ff48-ab45-4bb5-9d02-88745177dedb
-
+  responses:
+    Forbidden:
+      description: Forbidden
+      headers:
+        RateLimit:
+          $ref: '#/components/headers/RateLimit'
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+          example:
+            type: https://example.com/errors/forbidden
+            title: Forbidden
+            status: 403
+            detail: Access is forbidden with the provided credentials.
+        application/problem+xml:
+          schema:
+            $ref: '#/components/schemas/Problem'
+          example:
+            type: https://example.com/errors/forbidden
+            title: Forbidden
+            status: 403
+            detail: Access is forbidden with the provided credentials.
+    Unauthorized:
+      description: Unauthorized
+      headers:
+        RateLimit:
+          $ref: '#/components/headers/RateLimit'
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+          example:
+            type: https://example.com/errors/unauthorized
+            title: Unauthorized
+            status: 401
+            detail: You do not have the necessary permissions.
+        application/problem+xml:
+          schema:
+            $ref: '#/components/schemas/Problem'
+          example:
+            type: https://example.com/errors/unauthorized
+            title: Unauthorized
+            status: 401
+            detail: You do not have the necessary permissions.
+    Conflict:
+      description: Conflict
+      headers:
+        RateLimit:
+          $ref: '#/components/headers/RateLimit'
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+          example:
+            type: https://example.com/errors/conflict
+            title: Conflict
+            status: 409
+            detail: There is a conflict with an existing resource.
+        application/problem+xml:
+          schema:
+            $ref: '#/components/schemas/Problem'
+          example:
+            type: https://example.com/errors/conflict
+            title: Conflict
+            status: 409
+            detail: There is a conflict with an existing resource.
+    NotFound:
+      description: Not Found
+      headers:
+        RateLimit:
+          $ref: '#/components/headers/RateLimit'
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+          example:
+            type: https://example.com/errors/not-found
+            title: Not Found
+            status: 404
+            detail: The requested resource was not found.
+        application/problem+xml:
+          schema:
+            $ref: '#/components/schemas/Problem'
+          example:
+            type: https://example.com/errors/not-found
+            title: Not Found
+            status: 404
+            detail: The requested resource was not found.
+    InternalServerError:
+      description: Internal Server Error
+      headers:
+        RateLimit:
+          $ref: '#/components/headers/RateLimit'
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+          example:
+            type: https://example.com/errors/internal-server-error
+            title: Internal Server Error
+            status: 500
+            detail: An unexpected error occurred.
+        application/problem+xml:
+          schema:
+            $ref: '#/components/schemas/Problem'
+          example:
+            type: https://example.com/errors/internal-server-error
+            title: Internal Server Error
+            status: 500
+            detail: An unexpected error occurred.
+    BadRequest:
+      description: Bad Request
+      headers:
+        RateLimit:
+          $ref: '#/components/headers/RateLimit'
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+          example:
+            type: https://example.com/errors/bad-request
+            title: Bad Request
+            status: 400
+            detail: The request is invalid or missing required parameters.
+        application/problem+xml:
+          schema:
+            $ref: '#/components/schemas/Problem'
+          example:
+            type: https://example.com/errors/bad-request
+            title: Bad Request
+            status: 400
+            detail: The request is invalid or missing required parameters.
+    TooManyRequests:
+      description: Too Many Requests
+      headers:
+        RateLimit:
+          $ref: '#/components/headers/RateLimit'
+        Retry-After:
+          $ref: '#/components/headers/Retry-After'
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+          example:
+            type: https://example.com/errors/too-many-requests
+            title: Too Many Requests
+            status: 429
+            detail: You have exceeded the rate limit.
+        application/problem+xml:
+          schema:
+            $ref: '#/components/schemas/Problem'
+          example:
+            type: https://example.com/errors/too-many-requests
+            title: Too Many Requests
+            status: 429
+            detail: You have exceeded the rate limit.
   schemas:
-
-    WrapperResponseCollection:
-      description: This is a generic request/response wrapper which contains both data and links which serve as hypermedia controls (HATEOAS).
-      type: object
-      required:
-        - meta
-        - data
-        - links
-      properties:
-        meta:
-          $ref: '#/components/schemas/Meta'
-        data:
-          description: The wrapper for a collection is an array of objects.
-          type: array
-          maxItems: 100
-          minItems: 1
-          items:
-            $ref: '#/components/schemas/Message'
-        links:
-          $ref: '#/components/schemas/LinksPagination'
-      xml:
-        name: data
-
-    WrapperResponseObject:
-      description: This is a generic request/response wrapper which contains both data and links which serve as hypermedia controls (HATEOAS).
-      type: object
-      required:
-        - meta
-        - data
-        - links
-      properties:
-        meta:
-          $ref: '#/components/schemas/Meta'
-        data:
-          $ref: '#/components/schemas/Message'
-        links:
-          $ref: '#/components/schemas/LinksSelf'
-      xml:
-        name: data
-
-    LinksSelf:
-      type: object
-      description: A link to reference each message.
-      required:
-        - self
-      properties:
-        self:
-          type: string
-          description: A URL to message returned.
-          format: uri
-          minLength: 10
-          maxLength: 2048
-
     Meta:
       type: object
       description: The metadata for each response.
       required:
-        - page
-        - totalPages
+      - page
+      - totalPages
       properties:
         page:
           type: integer
@@ -419,34 +452,16 @@ components:
           description: The total number of pages.
           minLength: 1
           maxLength: 1000
-
-    LinksPagination:
-      type: object
-      description: The handling of each page.
-      properties:
-        next:
-          type: string
-          description: The next page in results.
-          format: uri
-          minLength: 10
-          maxLength: 2048
-        prev:
-          type: string
-          description: The previous page in results.
-          format: uri
-          minLength: 10
-          maxLength: 2048
-
     Message:
       type: object
       description: A Schema.org compliant message object.
       xml:
         name: message
       required:
-        - id
-        - name
-        - address
-        - country_code
+      - id
+      - name
+      - address
+      - country_code
       properties:
         identifier:
           type: string
@@ -492,13 +507,61 @@ components:
           minLength: 10
           maxLength: 10
           example: '2018-04-25T18:00:30+01:00'
-
+    LinksSelf:
+      type: object
+      description: A link to reference each message.
+      required:
+      - self
+      properties:
+        self:
+          type: string
+          description: A URL to message returned.
+          format: uri
+          minLength: 10
+          maxLength: 2048
+    WrapperResponseCollection:
+      description: This is a generic request/response wrapper which contains both data and links which serve as hypermedia controls (HATEOAS).
+      type: object
+      required:
+      - meta
+      - data
+      - links
+      properties:
+        meta:
+          $ref: '#/components/schemas/Meta'
+        data:
+          description: The wrapper for a collection is an array of objects.
+          type: array
+          maxItems: 100
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/Message'
+        links:
+          $ref: '#/components/schemas/LinksPagination'
+      xml:
+        name: data
+    WrapperResponseObject:
+      description: This is a generic request/response wrapper which contains both data and links which serve as hypermedia controls (HATEOAS).
+      type: object
+      required:
+      - meta
+      - data
+      - links
+      properties:
+        meta:
+          $ref: '#/components/schemas/Meta'
+        data:
+          $ref: '#/components/schemas/Message'
+        links:
+          $ref: '#/components/schemas/LinksSelf'
+      xml:
+        name: data
     Problem:
       type: object
       description: This is a Problem Details for HTTP APIs object.
       required:
-        - title
-        - status
+      - title
+      - status
       xml:
         name: problem
         namespace: urn:ietf:rfc:7807
@@ -533,26 +596,78 @@ components:
           example: 400
           minLength: 3
           maxLength: 3
-
+    LinksPagination:
+      type: object
+      description: The handling of each page.
+      properties:
+        next:
+          type: string
+          description: The next page in results.
+          format: uri
+          minLength: 10
+          maxLength: 2048
+        prev:
+          type: string
+          description: The previous page in results.
+          format: uri
+          minLength: 10
+          maxLength: 2048
+  examples:
+    MessageCollection:
+      value:
+        meta:
+          page: 1
+          pageSize: 10
+          totalPages: 2
+        data:
+        - id: efdbb9d1-02c2-4bc3-afb7-6788d8782b1e
+          sender: Jane Doe
+          recipient: John Doe
+          subjectOf: Meeting Later
+          text: Please meet me at the market.
+          dateSent: '2018-04-25T18:00:30+01:00'
+          dateReceived: '2018-04-25T18:00:30+01:00'
+        links:
+          self: https://api.example.com/messages
+          next: https://api.example.com/messages?page=2
+    Message:
+      value:
+        sender: Jane Doe
+        recipient: John Doe
+        subjectOf: Meeting Later
+        text: Please meet me at the market.
+    SingleMessage:
+      value:
+        meta:
+          page: 1
+          pageSize: 10
+          totalPages: 2
+        data:
+          id: efdbb9d1-02c2-4bc3-afb7-6788d8782b1e
+          sender: Jane Doe
+          recipient: John Doe
+          subjectOf: Meeting Later
+          text: Please meet me at the market.
+          dateSent: '2018-04-25T18:00:30+01:00'
+          dateReceived: '2018-04-25T18:00:30+01:00'
+        links:
+          self: https://api.example.com/messages
   headers:
-
     RateLimit:
-      description: |
-        The RateLimit header communicates quota policies. It contains a `limit` to
+      description: 'The RateLimit header communicates quota policies. It contains a `limit` to
+
         convey the expiring limit, `remaining` to convey the remaining quota units,
+
         and `reset` to convey the time window reset time.
+
+        '
       schema:
         type: string
         minLength: 10
         maxLength: 250
         example: limit=10, remaining=0, reset=10
-
     Retry-After:
-      description: |
-        The Retry-After header indicates how long the user agent should wait before making a follow-up request. 
-        The value is in seconds and can be an integer or a date in the future. 
-        If the value is an integer, it indicates the number of seconds to wait. 
-        If the value is a date, it indicates the time at which the user agent should make a follow-up request. 
+      description: "The Retry-After header indicates how long the user agent should wait before making a follow-up request. \nThe value is in seconds and can be an integer or a date in the future. \nIf the value is an integer, it indicates the number of seconds to wait. \nIf the value is a date, it indicates the time at which the user agent should make a follow-up request. \n"
       schema:
         type: string
         minLength: 10
@@ -562,170 +677,13 @@ components:
           value: '120'
           summary: Retry after 120 seconds
         date:
-          value: 'Fri, 31 Dec 2021 23:59:59 GMT'
+          value: Fri, 31 Dec 2021 23:59:59 GMT
           summary: Retry after the specified date
-
-  responses:
-
-    BadRequest:
-      description: Bad Request
-      headers:
-        RateLimit:
-          $ref: '#/components/headers/RateLimit'
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Problem'
-          example:
-            type: https://example.com/errors/bad-request
-            title: Bad Request
-            status: 400
-            detail: The request is invalid or missing required parameters.
-        application/problem+xml:
-          schema:
-            $ref: '#/components/schemas/Problem'
-          example:
-            type: https://example.com/errors/bad-request
-            title: Bad Request
-            status: 400
-            detail: The request is invalid or missing required parameters.
-
-    Conflict:
-      description: Conflict
-      headers:
-        RateLimit:
-          $ref: '#/components/headers/RateLimit'
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Problem'
-          example:
-            type: https://example.com/errors/conflict
-            title: Conflict
-            status: 409
-            detail: There is a conflict with an existing resource.
-        application/problem+xml:
-          schema:
-            $ref: '#/components/schemas/Problem'
-          example:
-            type: https://example.com/errors/conflict
-            title: Conflict
-            status: 409
-            detail: There is a conflict with an existing resource.
-
-    Forbidden:
-      description: Forbidden
-      headers:
-        RateLimit:
-          $ref: '#/components/headers/RateLimit'
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Problem'
-          example:
-            type: https://example.com/errors/forbidden
-            title: Forbidden
-            status: 403
-            detail: Access is forbidden with the provided credentials.
-        application/problem+xml:
-          schema:
-            $ref: '#/components/schemas/Problem'
-          example:
-            type: https://example.com/errors/forbidden
-            title: Forbidden
-            status: 403
-            detail: Access is forbidden with the provided credentials.
-
-    InternalServerError:
-      description: Internal Server Error
-      headers:
-        RateLimit:
-          $ref: '#/components/headers/RateLimit'
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Problem'
-          example:
-            type: https://example.com/errors/internal-server-error
-            title: Internal Server Error
-            status: 500
-            detail: An unexpected error occurred.
-        application/problem+xml:
-          schema:
-            $ref: '#/components/schemas/Problem'
-          example:
-            type: https://example.com/errors/internal-server-error
-            title: Internal Server Error
-            status: 500
-            detail: An unexpected error occurred.
-
-    NotFound:
-      description: Not Found
-      headers:
-        RateLimit:
-          $ref: '#/components/headers/RateLimit'
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Problem'
-          example:
-            type: https://example.com/errors/not-found
-            title: Not Found
-            status: 404
-            detail: The requested resource was not found.
-        application/problem+xml:
-          schema:
-            $ref: '#/components/schemas/Problem'
-          example:
-            type: https://example.com/errors/not-found
-            title: Not Found
-            status: 404
-            detail: The requested resource was not found.
-
-    TooManyRequests:
-      description: Too Many Requests
-      headers:
-        RateLimit:
-          $ref: '#/components/headers/RateLimit'
-        Retry-After:
-          $ref: '#/components/headers/Retry-After'
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Problem'
-          example:
-            type: https://example.com/errors/too-many-requests
-            title: Too Many Requests
-            status: 429
-            detail: You have exceeded the rate limit.
-        application/problem+xml:
-          schema:
-            $ref: '#/components/schemas/Problem'
-          example:
-            type: https://example.com/errors/too-many-requests
-            title: Too Many Requests
-            status: 429
-            detail: You have exceeded the rate limit.
-
-    Unauthorized:
-      description: Unauthorized
-      headers:
-        RateLimit:
-          $ref: '#/components/headers/RateLimit'
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Problem'
-          example:
-            type: https://example.com/errors/unauthorized
-            title: Unauthorized
-            status: 401
-            detail: You do not have the necessary permissions.
-        application/problem+xml:
-          schema:
-            $ref: '#/components/schemas/Problem'
-          example:
-            type: https://example.com/errors/unauthorized
-            title: Unauthorized
-            status: 401
-            detail: You do not have the necessary permissions.
+  securitySchemes:
+    apiKeys:
+      type: apiKey
+      name: api-key
+      in: header
+externalDocs:
+  description: Messages API Landing Page
+  url: http://example.com/messages
