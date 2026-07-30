@@ -4,7 +4,20 @@ description: >-
   A template and concept entry for messaging APIs. This represents the pattern and structure for messaging API
   implementations used in storytelling, training, and knowledge bases.
 type: Index
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/messaging-api.png
 url: https://raw.githubusercontent.com/api-evangelist/messaging-api/refs/heads/main/apis.yml
 tags:
   - API Pattern
@@ -14,21 +27,16 @@ created: '2024-12-29'
 modified: '2026-05-19'
 specificationVersion: '0.19'
 apis:
-  - aid: messaging-api:messages-api
-    name: Messaging API Messages API
-    tags:
-      - Messaging
-      - Messages
-      - Template
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    humanURL: https://example.com/messages
-    baseURL: https://api.example.com
-    properties:
-      - url: openapi/messaging-api-openapi.yml
-        type: OpenAPI
-    description: >-
-      Template Messages API used as a reusable pattern for messaging API design, storytelling, training, and knowledge
-      bases. Models the core operations expected of a generic messages-style endpoint.
+- aid: messaging-api:messaging-api-messages-api
+  name: Messaging API Messages API
+  description: Managing, sending, and receiving of messages via SMS and other channels.
+  humanURL: https://example.com/messages
+  baseURL: https://api.example.com
+  tags:
+  - Messages
+  properties:
+  - type: OpenAPI
+    url: openapi/messaging-api-messages-api-openapi.yml
 common: []
 maintainers:
   - FN: Kin Lane
