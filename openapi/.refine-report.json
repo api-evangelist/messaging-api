@@ -1,0 +1,14 @@
+{
+  "provider": "messaging-api",
+  "sources": [
+    "messaging-api-messages-api-openapi.yml"
+  ],
+  "outputs": [
+    "messaging-api-messages-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
