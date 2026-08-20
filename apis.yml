@@ -33,6 +33,8 @@ apis:
   humanURL: https://example.com/messages
   baseURL: https://api.example.com
   tags:
+  - Message
+  tags_raw:
   - Messages
   properties:
   - type: OpenAPI
