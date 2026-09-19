@@ -34,6 +34,10 @@ url: https://raw.githubusercontent.com/api-evangelist/messaging-api/refs/heads/m
 tags:
   - API Pattern
   - Messaging
+  - Templates
+tags_raw:
+  - API Pattern
+  - Messaging
   - Template
 created: '2024-12-29'
 modified: '2026-05-19'
